@@ -33,10 +33,10 @@ sudo systemctl enable mariadb
 ```
 
 ## Important
-### 1. Memory settings: The values for key buffer size, max allowed packet, table open cache, sort buffer size, read buffer size, and read random buffer size are set to optimize memory usage and reduce disk I/O.
-### 2. InnoDB settings: The configuration options for the InnoDB storage engine are set to improve performance and reliability, such as using a dedicated file per table, a large buffer pool size, and a large log file size.
-### 3. Performance tuning: The configuration options related to performance tuning aim to maximize the number of concurrent connections and reduce wait times and timeouts.
-### Logging: The slow query log, long query time, and log queries not using indexes options are set to provide better visibility into the performance of the database, making it easier to identify and resolve performance issues.
+1. Memory settings: The values for key buffer size, max allowed packet, table open cache, sort buffer size, read buffer size, and read random buffer size are set to optimize memory usage and reduce disk I/O.
+2. InnoDB settings: The configuration options for the InnoDB storage engine are set to improve performance and reliability, such as using a dedicated file per table, a large buffer pool size, and a large log file size.
+3. Performance tuning: The configuration options related to performance tuning aim to maximize the number of concurrent connections and reduce wait times and timeouts.
+4. Logging: The slow query log, long query time, and log queries not using indexes options are set to provide better visibility into the performance of the database, making it easier to identify and resolve performance issues.
 
 # Optimizing MariaDB on systems with 16GB of RAM
 To optimize MariaDB on systems with 16GB of RAM, follow these steps:
