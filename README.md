@@ -94,7 +94,7 @@ sudo systemctl restart mariadb
 To optimize MariaDB on systems with 32GB or more of RAM, follow these steps:
 1. Open the MariaDB configuration file by running the following command:
 ```
-sudo nano /etc/mysql/my.cnf
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
 ```
 2. Add the following lines to the end of the file:
 ```
@@ -142,10 +142,20 @@ log_queries_not_using_indexes = 1
 sudo systemctl restart mariadb
 ```
 
-# Verify Optimization
-Verify that the optimization has taken effect by checking the status of the MariaDB service:
+## Check the max connections
+1. Log in to the MariaDB shell as the root user:
 ```
-mysql> SHOW GLOBAL STATUS;
+mysql -u root -p
+```
+Enter the root user password when prompted.
+2. Run the following command to check the current maximum connections setting:
+```
+SHOW VARIABLES LIKE "max_connections";
+```
+This will display the current value of the max_connections variable.
+Exit the MariaDB shell:
+```
+exit;
 ```
 
 With these optimizations, your MariaDB installation should perform optimally on both systems with 32GB of RAM and 32GB or more of RAM.
