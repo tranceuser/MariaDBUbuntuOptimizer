@@ -42,7 +42,7 @@ sudo systemctl enable mariadb
 To optimize MariaDB on systems with 16GB of RAM, follow these steps:
 1. Open the MariaDB configuration file by running the following command:
 ```
-sudo nano /etc/mysql/my.cnf
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
 ```
 2. Add the following lines to the end of the file:
 ```
