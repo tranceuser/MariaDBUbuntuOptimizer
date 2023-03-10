@@ -142,6 +142,46 @@ log_queries_not_using_indexes = 1
 sudo systemctl restart mariadb
 ```
 
+## Creating a Database
+To create a database in MariaDB, you can use the following steps:
+1. Connect to the MariaDB server as a root user:
+```
+mysql -u root -p
+```
+2. Create a database using the CREATE DATABASE command:
+```
+CREATE DATABASE database_name;
+```
+## Creating a User
+Create a user using the CREATE USER command:
+```
+CREATE USER 'username'@'hostname' IDENTIFIED BY 'password';
+```
+## Granting Privileges to a User
+Grant privileges to a user using the GRANT command:
+```
+GRANT privileges ON database_name.* TO 'username'@'hostname';
+```
+# Revoking Privileges from a User
+Revoke privileges from a user using the REVOKE command:
+```
+REVOKE privileges ON database_name.* FROM 'username'@'hostname';
+```
+## Remote Access
+On Ubuntu 22.04, the configuration file for MariaDB is usually located in /etc/mysql/mariadb.conf.d/50-server.cnf.
+To edit the file, you can use a text editor such as nano:
+```
+sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+```
+Then, add the following line under the [mysqld] section:
+```
+bind-address = 0.0.0.0
+```
+Save the file and exit the editor.
+After making this change, you will need to restart MariaDB for the changes to take effect:
+```
+sudo systemctl restart mariadb
+```
 ## Check the max connections
 1. Log in to the MariaDB shell as the root user:
 ```
@@ -157,5 +197,6 @@ Exit the MariaDB shell:
 ```
 exit;
 ```
+
 
 With these optimizations, your MariaDB installation should perform optimally on both systems with 32GB of RAM and 32GB or more of RAM.
