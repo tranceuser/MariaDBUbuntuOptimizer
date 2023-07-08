@@ -1,14 +1,14 @@
-# MariaDB installation and optimization on Ubuntu 22.04
+# MariaDB installation and optimization on Ubuntu
 
-This guide explains how to install and optimize MariaDB on Ubuntu 22.04 for both systems with 32GB of RAM and 64GB of RAM.
+This guide explains how to install and optimize MariaDB on Ubuntu 22.04 or newer.
 
 Prerequisites
 Before you begin, make sure you have the following:
-- A server running Ubuntu 22.04
+- A server running Ubuntu 22.04 or newer
 - A root user or a user with sudo privileges
 
 # Installing MariaDB
-To install MariaDB on Ubuntu 22.04, follow these steps:
+To install MariaDB on Ubuntu 22.04 or newer, follow these steps:
 
 1. Update the package list by running the following command:
 ```
@@ -32,141 +32,39 @@ sudo systemctl start mariadb
 sudo systemctl enable mariadb
 ```
 
-## Important
-1. Memory settings: The values for key buffer size, max allowed packet, table open cache, sort buffer size, read buffer size, and read random buffer size are set to optimize memory usage and reduce disk I/O.
-2. InnoDB settings: The configuration options for the InnoDB storage engine are set to improve performance and reliability, such as using a dedicated file per table, a large buffer pool size, and a large log file size.
-3. Performance tuning: The configuration options related to performance tuning aim to maximize the number of concurrent connections and reduce wait times and timeouts.
-4. Logging: The slow query log, long query time, and log queries not using indexes options are set to provide better visibility into the performance of the database, making it easier to identify and resolve performance issues.
+## MariaDB Backup
+Before any changes are made, the script creates a backup of your original MariaDB configuration file, located at `/etc/mysql/mariadb.conf.d/50-server.cnf`. The backup file is appended with the current timestamp to prevent overwriting of previous backups.
 
-# Optimizing MariaDB on systems with 16GB of RAM
-To optimize MariaDB on systems with 16GB of RAM, follow these steps:
-1. Open the MariaDB configuration file by running the following command:
+## MariaDB Restoring Configuration
+To restore the original configuration, copy the backup file over the current configuration file, like so:
 ```
-sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
+sudo cp /etc/mysql/mariadb.conf.d/50-server.cnf.bak /etc/mysql/mariadb.conf.d/50-server.cnf
 ```
-2. Add the following lines to the end of the file:
-```
-[mysqld]
-# Memory settings
-key_buffer_size = 512M
-max_allowed_packet = 256M
-table_open_cache = 4096
-sort_buffer_size = 2M
-read_buffer_size = 2M
-read_rnd_buffer_size = 8M
-myisam_sort_buffer_size = 128M
-thread_cache_size = 32
+Replace 50-server.cnf.bak with the actual name of your backup file.
 
-# InnoDB Settings
-innodb_file_per_table = 1
-innodb_buffer_pool_size = 7G
-innodb_log_file_size = 256M
-innodb_flush_log_at_trx_commit = 2
-innodb_thread_concurrency = 0
-innodb_write_io_threads = 8
-innodb_read_io_threads = 8
-innodb_flush_method = O_DIRECT
-innodb_autoinc_lock_mode = 2
+## MariaDB Optimization Script
 
-# Performance tuning
-query_cache_type = 0
-query_cache_size = 0
-max_connections = 1000
-max_user_connections = 200
-interactive_timeout = 300
-wait_timeout = 300
-connect_timeout = 10
-tmp_table_size = 256M
-max_heap_table_size = 256M
+This is a Bash script that optimizes your MariaDB installation based on the total RAM and CPU resources available on your machine.
+It calculates optimal configuration settings based on the hardware and chosen optimization level.
 
-# Logging
-slow_query_log = 1
-long_query_time = 1
-log_queries_not_using_indexes = 1
+1. Give the script executable permissions:
 ```
-3. Save the file and exit the editor.
-4. Restart the MariaDB service by running the following command:
+chmod +x optimize_mariadb.sh
+```
+2. Run the script as root:
+```
+sudo ./optimize_mariadb.sh
+```
+3. Restart the MariaDB service by running the following command:
 ```
 sudo systemctl restart mariadb
 ```
 
-# Optimizing MariaDB on systems with 32GB or more of RAM
-To optimize MariaDB on systems with 32GB or more of RAM, follow these steps:
-1. Open the MariaDB configuration file by running the following command:
-```
-sudo nano /etc/mysql/mariadb.conf.d/50-server.cnf
-```
-2. Add the following lines to the end of the file:
-```
-[mysqld]
-# Memory settings
-key_buffer_size = 1024M
-max_allowed_packet = 256M
-table_open_cache = 8192
-sort_buffer_size = 4M
-read_buffer_size = 4M
-read_rnd_buffer_size = 16M
-myisam_sort_buffer_size = 256M
-thread_cache_size = 64
+The script will guide you through the rest. When prompted, choose an optimization level:
+1: Optimizes MariaDB to use up to 50% of total RAM and CPU.
+2: Optimizes MariaDB to use up to 100% of total RAM and CPU.
+Use option 2 only if MariaDB is the sole service running on your server.
 
-# InnoDB Settings
-innodb_file_per_table = 1
-innodb_buffer_pool_size = 14G
-innodb_log_file_size = 512M
-innodb_flush_log_at_trx_commit = 2
-innodb_thread_concurrency = 0
-innodb_write_io_threads = 16
-innodb_read_io_threads = 16
-innodb_flush_method = O_DIRECT
-innodb_autoinc_lock_mode = 2
-
-# Performance tuning
-query_cache_type = 0
-query_cache_size = 0
-max_connections = 2000
-max_user_connections = 300
-interactive_timeout = 300
-wait_timeout = 300
-connect_timeout = 10
-tmp_table_size = 512M
-max_heap_table_size = 512M
-
-# Logging
-slow_query_log = 1
-long_query_time = 1
-log_queries_not_using_indexes = 1
-```
-3. Save the file and exit the editor.
-4. Restart the MariaDB service by running the following command:
-```
-sudo systemctl restart mariadb
-```
-
-## Creating a Database
-To create a database in MariaDB, you can use the following steps:
-1. Connect to the MariaDB server as a root user:
-```
-mysql -u root -p
-```
-2. Create a database using the CREATE DATABASE command:
-```
-CREATE DATABASE database_name;
-```
-## Creating a User
-Create a user using the CREATE USER command:
-```
-CREATE USER 'username'@'hostname' IDENTIFIED BY 'password';
-```
-## Granting Privileges to a User
-Grant privileges to a user using the GRANT command:
-```
-GRANT privileges ON database_name.* TO 'username'@'hostname';
-```
-# Revoking Privileges from a User
-Revoke privileges from a user using the REVOKE command:
-```
-REVOKE privileges ON database_name.* FROM 'username'@'hostname';
-```
 ## Remote Access
 On Ubuntu 22.04, the configuration file for MariaDB is usually located in /etc/mysql/mariadb.conf.d/50-server.cnf.
 To edit the file, you can use a text editor such as nano:
@@ -197,6 +95,3 @@ Exit the MariaDB shell:
 ```
 exit;
 ```
-
-
-With these optimizations, your MariaDB installation should perform optimally on both systems with 32GB of RAM and 32GB or more of RAM.
