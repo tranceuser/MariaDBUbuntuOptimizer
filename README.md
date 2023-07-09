@@ -1,7 +1,7 @@
 # MariaDB installation and optimization on Ubuntu
 This guide outlines the steps for installing and optimizing MariaDB on Ubuntu 22.04 or newer.
 
-Prerequisites
+## Prerequisites
 Before starting the installation process, ensure you have the following:
 - A server running Ubuntu 22.04 or newer
 - A root user or a user with sudo privileges
