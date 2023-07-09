@@ -1,4 +1,4 @@
-# MariaDB installation and optimization on Ubuntu
+# MariaDB installation and optimization Script on Ubuntu
 This guide outlines the steps for installing and optimizing MariaDB on Ubuntu 22.04 or newer.
 
 ## Prerequisites
@@ -7,7 +7,7 @@ Before starting the installation process, ensure you have the following:
 - A root user or a user with sudo privileges
 - Git installed. If not, install it with `sudo apt-get install git -y`
 
-## Script
+## Getting Started
 We provide a Bash script that optimizes your MariaDB installation based on the total RAM and CPU resources available on your server. It calculates optimal configuration settings according to the hardware and selected optimization level.
 
 The script will guide you through the remaining process. When prompted, select an optimization level:
